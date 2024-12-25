@@ -1,0 +1,52 @@
+﻿@code {
+    [Parameter]
+    public bool IsOpen { get; set; }
+
+    [Parameter]
+    public string BorderClass { get; set; } = "border-primary";
+
+    [Parameter]
+    public string HeaderText { get; set; } = "Information";
+
+    [Parameter]
+    public string Message { get; set; } = "Default message text.";
+
+    [Parameter]
+    public EventCallback<bool> OnClose { get; set; }
+
+    private void CloseModal()
+    {
+        IsOpen = false;
+        OnClose.InvokeAsync(false);
+    }
+}
+
+@if (IsOpen)
+{
+    <div class="modal-overlay">
+        <div class="card @BorderClass" style="max-width: 400px; margin: 20px auto;">
+            <div class="card-header text-center">
+                <h5>@HeaderText</h5>
+            </div>
+            <div class="card-body text-muted text-center">
+                <p>@Message</p>
+                <button class="btn btn-primary mt-3" @onclick="CloseModal">Okay</button>
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1050;
+    }
+</style>
